@@ -26,7 +26,7 @@ This XQL query for Cortex XSIAM analyzes Duo authentication logs to find users w
 
 7. It shows the results sorted by severity (most unusual first)
 
-## Sample Query
+## Query
 
 ```
 dataset = duo_duo_raw
