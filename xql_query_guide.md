@@ -402,14 +402,8 @@ preset = authentication_story
 
 ---
 
-## License
 
-This documentation is licensed under the MIT License - see the LICENSE file for details.
 
-## Acknowledgments
-
-- Palo Alto Networks for creating the Cortex XSIAM platform and XQL
-- The security community for continually pushing the boundaries of security analytics
 
 ---
 
