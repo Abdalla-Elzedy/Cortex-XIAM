@@ -18,21 +18,26 @@ dataset = duo_duo_raw
 | windowcomp lag(access_device_state) by user_name sort asc _time as previous_state
 | windowcomp lag(access_device_country) by user_name sort asc _time as previous_country
 | alter 
-    hours_between = divide(timestamp_diff(_time, previous_time, "MINUTE"), 60),
+    hours_between_raw = divide(timestamp_diff(_time, previous_time, "MINUTE"), 60),
+    hours_between_formatted = format_string("%.1f hours", divide(timestamp_diff(_time, previous_time, "MINUTE"), 60)),
+    minutes_between = timestamp_diff(_time, previous_time, "MINUTE")
+| alter    travel_time = if(minutes_between >= 60, 
+                    format_string("%.1f hours", divide(minutes_between, 60)), 
+                    format_string("%d minutes", minutes_between)),
     current_location = concat(access_device_city, ", ", access_device_state, ", ", access_device_country),
     previous_location = concat(previous_city, ", ", previous_state, ", ", previous_country)
-| filter hours_between > 0 and hours_between < 6
+| filter hours_between_raw > 0 and hours_between_raw < 6
 | filter previous_city != null and previous_city != access_device_city
 | filter current_location != null and current_location != ", ,"
 | fields 
     formatted_time,
     user_name, 
     previous_time, 
-    hours_between,
-    access_device_ip,
     previous_ip,
     previous_location, 
-    current_location
+    travel_time,
+    current_location,
+    access_device_ip
 | sort desc formatted_time
 ```
 
