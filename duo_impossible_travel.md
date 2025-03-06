@@ -19,25 +19,30 @@ dataset = duo_duo_raw
 | windowcomp lag(access_device_country) by user_name sort asc _time as previous_country
 | alter 
     hours_between_raw = divide(timestamp_diff(_time, previous_time, "MINUTE"), 60),
-    hours_between_formatted = format_string("%.1f hours", divide(timestamp_diff(_time, previous_time, "MINUTE"), 60)),
     minutes_between = timestamp_diff(_time, previous_time, "MINUTE")
-| alter    travel_time = if(minutes_between >= 60, 
+ | alter   travel_time = if(minutes_between >= 60, 
                     format_string("%.1f hours", divide(minutes_between, 60)), 
                     format_string("%d minutes", minutes_between)),
     current_location = concat(access_device_city, ", ", access_device_state, ", ", access_device_country),
     previous_location = concat(previous_city, ", ", previous_state, ", ", previous_country)
+| alter   country_changed = if(previous_country != access_device_country, true, false)
+| alter    risk_level = if(country_changed = true, 
+                     if(hours_between_raw < 2, "CRITICAL", "HIGH"), 
+                     if(hours_between_raw < 2, "HIGH", "MEDIUM"))
 | filter hours_between_raw > 0 and hours_between_raw < 6
 | filter previous_city != null and previous_city != access_device_city
 | filter current_location != null and current_location != ", ,"
 | fields 
     formatted_time,
-    user_name, 
     previous_time, 
+    country_changed,
+    user_name, 
+    risk_level,
     previous_ip,
     previous_location, 
     travel_time,
     current_location,
     access_device_ip
-| sort desc formatted_time
+| sort  desc country_changed, asc risk_level , desc formatted_time 
 ```
 
