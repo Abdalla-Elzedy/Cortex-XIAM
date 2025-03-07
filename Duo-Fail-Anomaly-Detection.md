@@ -1,4 +1,4 @@
-# Duo Authentication Failure Anomaly Detection with XQL
+# Duo Authentication Failure Anomaly Detection - XQL
 
 
 ## What This Query Does
@@ -7,12 +7,12 @@ This XQL query for Cortex XSIAM analyzes Duo authentication logs to find users w
 
 ## How It Works
 
-1. The query extracts relevant information from the Duo logs:
+1. The query parse relevant information from the Duo logs:
    - User information
    - Device and location details
    - Time information (day of week, hour, etc.)
 
-2. It filters for authentication failures (failed, denied, or fraud results)
+2. It filters for authentication failures (denied, or fraud results)
 
 3. It counts failures by user and day
 
@@ -80,6 +80,6 @@ Higher anomaly scores represent more unusual activity that may require investiga
 ## Usage
 
 This XQL query for Cortex XSIAM is helpful for:
+- Detecting unusual user behavior
 - Finding potential brute force attacks
 - Identifying compromised accounts
-- Detecting unusual user behavior
