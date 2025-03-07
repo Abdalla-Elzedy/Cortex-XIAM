@@ -1,4 +1,4 @@
-# Duo Authentication Security Analysis: Impossible Travel Detection
+# Duo Authentication: Impossible Travel Detection
 
 This query identifies potential security risks by detecting users who have authenticated from different geographical locations within a timeframe that makes physical travel between the locations impossible.
 
